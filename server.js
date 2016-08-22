@@ -5,7 +5,8 @@ var express       = require('express'),
   cookieParser    = require('cookie-parser'),
   cors            = require('cors'),
   bodyParser      = require('body-parser'),
-  mongoose        = require("mongoose");
+  mongoose        = require("mongoose"),
+  request         = require('request');
 
 // CONFIGURATION ===============================================
 // server port
@@ -38,6 +39,8 @@ mongoose.connect(dbURI, function (err, db) {
   else console.dir('Unable to connect to the database Server', err);
 });
 
+
+// =========================== MONGOOSE ==========================
 var productModel = mongoose.model('Product', {product: String});
 
 app.get('/list', function(req, res){
@@ -61,8 +64,42 @@ app.get('/display', function(req, res){
   });
 });
 
-var soapURI = 'http://erp-2/ews/ManexWebService.asmx/GetSalesOrderAndWorkOrder?WorkOrderNo=';
+// ===============================================================
 
+// =========================== SOAP ==============================
+
+var soapURI = 'http://erp-2/ews/ManexWebService.asmx/GetSalesOrderAndWorkOrder?WorkOrderNo=';
+app.post('/work_order',function (req,res) {
+  var work_order = req.body.work_order;
+  var url = soapURI + work_order;
+  request({
+    url: url,
+    json: true
+  }, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      // console.log(body); // Print the json response
+      // add further logic here
+      res.send(body);
+    }
+  });
+});
+
+app.get('/work_order/:work_order', function (req, res) {
+  var work_order = req.params.work_order;
+  var url = soapURI + work_order;
+  request({
+    url: url,
+    json: true
+  }, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      console.log(body); // Print the json response
+      // add further logic here
+      res.send(body);
+    }
+  });
+});
+
+// ================================================================
 /*
 // load all files in models dir
 fs.readdirSync(__dirname + '/models').forEach(function (filename) {

@@ -42,12 +42,40 @@ function appCtrl($location, $http, $scope){
         app.datafromMongo.push(d);
       });
     });
-  }
+  };
 
-  $scope.$watch('app.work_order',function(newVal, oldVal){
-    $location.search('app.work_order=' + newVal);
-    $scope.currSearch = $location.search();
-    var data = $scope.currSearch;
-    console.log(data);
-  });
+  app.getManex = function(work_order){
+    $http.get(URI + "/work_order/" + work_order)
+      .then(function(res){
+        app.getfromManex = remapPretty(res.data);
+      });
+  };
+
+  app.postManex = function(work_order){
+    $http.post(URI + "/work_order", {work_order: work_order})
+      .then(function(res){
+
+        app.postfromManex = remapPretty(res.data);
+        console.log(app.postfromManex);
+      });
+  };
+
+  function remapPretty(src){
+    var o = {};
+    src.map((d,idx) => {
+      o[idx] = {
+        key: d.UNIQ_KEY || '',
+        wo: d.WO_NO || '',
+        so: d.SO_NO || '',
+        due_date: d.DUE_DATE || '',
+        assembly: d.ASSY_NO || '',
+        revision: d.REVISION || '',
+        qty: d.QTY || '',
+        customer_po: d.CUST_PO_NO || '',
+        customer_name: d.CUST_NAME || '',
+        timestamp: Math.floor(Date.now() / 1000)
+      }
+    });
+    return o;
+  }
 }

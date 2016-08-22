@@ -1,9 +1,81 @@
 <div>
-  <h2>This is one mean Tutorial</h2>
+  <h2>CORS with meanJS</h2>
   <div ng-repeat="product in app.datafromMongo">
     <ul>
       <li>{{product._id}} {{product.product}}</li>
     </ul>
+  </div>
+
+  <div ng-if="app.getfromManex">
+    <table border="1" style="color:#FFA200">
+      <thead>
+      <tr>
+        <th>Index</th>
+        <th>Uniq_key</th>
+        <th>Customer_PO</th>
+        <th>Customer_Name</th>
+        <th>Due</th>
+        <th>Work_Order</th>
+        <th>Sale_Order</th>
+        <th>Assembly</th>
+        <th>Revision</th>
+        <th>Quantity</th>
+        <th>Timestamp</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="order in app.getfromManex">
+
+        <td>{{$index+1}}</td>
+        <td>{{order.key}}</td>
+        <td>{{order.customer_po}}</td>
+        <td>{{order.customer_name}}</td>
+        <td>{{order.due_date}}</td>
+        <td>{{order.wo}}</td>
+        <td>{{order.so}}</td>
+        <td>{{order.assembly}}</td>
+        <td>{{order.revision}}</td>
+        <td>{{order.qty}}</td>
+        <td>{{order.timestamp}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-if="app.postfromManex">
+    <table border="1" style="color:#166CD7">
+      <thead>
+      <tr>
+        <th>Index</th>
+        <th>Uniq_key</th>
+        <th>Customer_PO</th>
+        <th>Customer_Name</th>
+        <th>Due</th>
+        <th>Work_Order</th>
+        <th>Sale_Order</th>
+        <th>Assembly</th>
+        <th>Revision</th>
+        <th>Quantity</th>
+        <th>Timestamp</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="order in app.postfromManex">
+
+        <td>{{$index+1}}</td>
+        <td>{{order.key}}</td>
+        <td>{{order.customer_po}}</td>
+        <td>{{order.customer_name}}</td>
+        <td>{{order.due_date}}</td>
+        <td>{{order.wo}}</td>
+        <td>{{order.so}}</td>
+        <td>{{order.assembly}}</td>
+        <td>{{order.revision}}</td>
+        <td>{{order.qty}}</td>
+        <td>{{order.timestamp}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 
   <input type="text" ng-model="app.product">
@@ -14,6 +86,9 @@
   <label for="Work Order"> Work_Order Search:
     <input type="text" ng-model="app.work_order">
   </label>
+  <button ng-click="app.getManex(app.work_order)">get Manex</button>
+  <button ng-click="app.postManex(app.work_order)">post Manex</button>
   <span ng-show="app.work_order">Search for "{{app.work_order}}"</span>
   <span ng-show="!app.work_order">Search ..."</span>
+
 </div>
