@@ -37,7 +37,7 @@ function appCtrl($http){
   };
 
   app.show = function () {
-    $http.get(URI).then(function(product){
+    $http.get(URI + "/list").then(function(product){
       console.log(product);
       app.datafromMongo.push(product);
     });

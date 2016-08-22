@@ -31,12 +31,12 @@ mongoose.connect(dbURI, function (err, db) {
   if (!err) {
     console.log('Connection established to', dbURI);
   }
-  else console.dir('Unable to connect to the Server', err);
+  else console.dir('Unable to connect to the database Server', err);
 });
 
 var productModel = mongoose.model('Product', {product: String});
 
-app.get('/', function(req, res){
+app.get('/list', function(req, res){
   productModel.find(function (err, products) {
     res.send(products);
   });
