@@ -24,9 +24,9 @@ meanApp.config(function ($routeProvider) {
 
 meanApp.controller('appCtrl', appCtrl);
 
-appCtrl.$inject = ['$http'];
+appCtrl.$inject = ['$location', '$http', '$scope'];
 
-function appCtrl($http){
+function appCtrl($location, $http, $scope){
   var app = this;
   var URI = "http://localhost:3333";
 
@@ -43,4 +43,11 @@ function appCtrl($http){
       });
     });
   }
+
+  $scope.$watch('app.work_order',function(newVal, oldVal){
+    $location.search('app.work_order=' + newVal);
+    $scope.currSearch = $location.search();
+    var data = $scope.currSearch;
+    console.log(data);
+  });
 }

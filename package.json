@@ -10,6 +10,7 @@
     "cors": "latest",
     "express": "latest",
     "method-override": "latest",
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "pug": "^2.0.0-beta5"
   }
 }

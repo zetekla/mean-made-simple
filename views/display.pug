@@ -1,0 +1,17 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title Document
+  body
+    h3='Assembly Listing'
+    - if (products.length) {
+    table
+      tr
+        th id
+        th product
+      each product in products
+        tr
+          td= product._id
+          td= product.product
+    - }

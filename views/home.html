@@ -7,6 +7,13 @@
   </div>
 
   <input type="text" ng-model="app.product">
+
   <button ng-click="app.submit(app.product)">Submit</button>
   <button ng-click="app.show()">Show</button>
+  <br><br>
+  <label for="Work Order"> Work_Order Search:
+    <input type="text" ng-model="app.work_order">
+  </label>
+  <span ng-show="app.work_order">Search for "{{app.work_order}}"</span>
+  <span ng-show="!app.work_order">Search ..."</span>
 </div>

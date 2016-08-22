@@ -1,6 +1,7 @@
 // modules =====================================================
 var express       = require('express'),
   app             = express(),
+  path            = require('path'),
   cookieParser    = require('cookie-parser'),
   cors            = require('cors'),
   bodyParser      = require('body-parser'),
@@ -26,6 +27,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
 var dbURI = 'mongodb://localhost:27017/schema_name';
 mongoose.connect(dbURI, function (err, db) {
   if (!err) {
@@ -49,6 +53,15 @@ app.post('/add', function (req,res) {
     res.send();
   });
 });
+
+// render to a client display (pug) simply without Angular
+app.get('/display', function(req, res){
+  productModel.find(function (err, products) {
+    res.render('display', {products: products});
+  });
+});
+
+var soapURI = 'http://erp-2/ews/ManexWebService.asmx/GetSalesOrderAndWorkOrder?WorkOrderNo=';
 
 /*
 // load all files in models dir
