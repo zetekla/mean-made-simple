@@ -1,6 +1,10 @@
 <div>
   <h2>This is one mean Tutorial</h2>
-  <div ng-repeat="product in app.datafromMongo">{{product}}</div>
+  <div ng-repeat="product in app.datafromMongo">
+    <ul>
+      <li>{{product._id}} {{product.product}}</li>
+    </ul>
+  </div>
 
   <input type="text" ng-model="app.product">
   <button ng-click="app.submit(app.product)">Submit</button>

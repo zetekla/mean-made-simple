@@ -38,8 +38,9 @@ function appCtrl($http){
 
   app.show = function () {
     $http.get(URI + "/list").then(function(product){
-      console.log(product);
-      app.datafromMongo.push(product);
+      product.data.map(function(d,idx){
+        app.datafromMongo.push(d);
+      });
     });
   }
 }
