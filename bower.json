@@ -1,0 +1,32 @@
+{
+  "name": "MEAN_made_simple_instructional_screencast",
+  "main": "server.js",
+  "homepage": "http://siirikerava.com",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.5.0",
+    "angular-animate": "~1.5.0",
+    "angular-bootstrap": "~1.2.1",
+    "angular-cookies": "latest",
+    "angular-file-upload": "~2.2.0",
+    "angular-messages": "~1.5.0",
+    "angular-mocks": "~1.5.0",
+    "angular-resource": "~1.5.0",
+    "angular-route": "^1.4.9",
+    "angular-sanitize": "^1.4.9",
+    "angular-touch": "^1.4.9",
+    "angular-ui-router": "~0.2.18"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap-theme.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "jquery": {
+      "main": []
+    }
+  }
+}

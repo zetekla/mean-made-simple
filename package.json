@@ -1,0 +1,15 @@
+{
+  "name": "MEAN_made_simple_instructional_screencast",
+  "main": "server.js",
+  "homepage": "http://siirikerava.com",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "latest",
+    "bower": "~1.7.7",
+    "cookie-parser": "latest",
+    "cors": "latest",
+    "express": "latest",
+    "method-override": "latest",
+    "mongoose": "latest"
+  }
+}
