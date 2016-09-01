@@ -2,9 +2,36 @@
   <h2>CORS with meanJS</h2>
   <div ng-repeat="product in app.datafromMongo">
     <ul>
-      <li>{{product._id}} {{product.product}}</li>
+      <li>{{product._id}} {{product.product}} {{product.description}}</li>
     </ul>
   </div>
+
+  <div style="overflow-x:auto;" ng-repeat="product in app.products">
+    <table border="0.5">
+      <thead>
+      <tr>
+        <th>id</th>
+        <th>product</th>
+        <th>description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{product._id}}</td>
+        <td>{{product.product}}</td>
+        <td>{{product.description}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  Product <input type="text" ng-model="app.product">
+  Description <input type="text" ng-model="app.description">
+
+  <button ng-click="app.submit({ product: app.product, description: app.description })">Submit</button>
+  <button ng-click="app.show()">Show</button>
+
+  <br><br>
 
   <div ng-if="app.getfromManex">
     <table border="1" style="color:#FFA200">
@@ -78,13 +105,9 @@
     </table>
   </div>
 
-  <input type="text" ng-model="app.product">
-
-  <button ng-click="app.submit(app.product)">Submit</button>
-  <button ng-click="app.show()">Show</button>
   <br><br>
-  <label for="Work Order"> Work_Order Search:
-    <input type="text" ng-model="app.work_order">
+  <label for="Work-Order"> Work_Order Search:
+    <input type="text" ng-model="app.work_order" id="Work-Order">
   </label>
   <button ng-click="app.getManex(app.work_order)">get Manex</button>
   <button ng-click="app.postManex(app.work_order)">post Manex</button>

@@ -32,8 +32,14 @@ function appCtrl($location, $http, $scope){
 
   app.datafromMongo=[];
 
-  app.submit = function(product){
-    $http.post(URI + "/add", {product: product});
+  $http.get(URI + "/list").then(function(res){
+    app.products = res.data;
+  });
+
+  app.submit = function(req){
+    $http.post(URI + "/add", req).then(function(res){
+      app.products.push(res.data);
+    });
   };
 
   app.show = function () {
@@ -54,7 +60,6 @@ function appCtrl($location, $http, $scope){
   app.postManex = function(work_order){
     $http.post(URI + "/work_order", {work_order: work_order})
       .then(function(res){
-
         app.postfromManex = remapPretty(res.data);
         console.log(app.postfromManex);
       });

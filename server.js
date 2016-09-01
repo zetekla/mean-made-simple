@@ -41,19 +41,29 @@ mongoose.connect(dbURI, function (err, db) {
 
 
 // =========================== MONGOOSE ==========================
-var productModel = mongoose.model('Product', {product: String});
+var productModel = mongoose.model('Product', {product: String, description: String});
 
 app.get('/list', function(req, res){
   productModel.find(function (err, products) {
+    if (err) {
+      return res.send(err);
+    }
     res.send(products);
   });
 });
 
 app.post('/add', function (req,res) {
   var product = req.body.product;
-  var productDescription = new productModel ({product: product});
-  productDescription.save(function(){
-    res.send();
+  // var productDescription = new productModel ({product: product});
+  var productDescription = new productModel (req.body);
+  productDescription.save(function(err, record){
+    if (err) {
+      return res.status(400).send(
+        err
+      );
+    } else {
+      res.send(record);
+    }
   });
 });
 
@@ -77,7 +87,7 @@ app.post('/work_order',function (req,res) {
     json: true
   }, function (error, response, body) {
     if (!error && response.statusCode === 200) {
-      // console.log(body); // Print the json response
+      console.log(body); // Print the json response
       // add further logic here
       res.send(body);
     }
