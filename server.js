@@ -28,8 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'html');
+app.use(express.static(__dirname + '/views'));
 
 var dbURI = 'mongodb://localhost:27017/schema_name';
 mongoose.connect(dbURI, function (err, db) {
@@ -42,6 +43,10 @@ mongoose.connect(dbURI, function (err, db) {
 
 // =========================== MONGOOSE ==========================
 var productModel = mongoose.model('Product', {product: String, description: String});
+
+app.get('/', function(req, res, next){
+  res.render('index');
+});
 
 app.get('/list', function(req, res){
   productModel.find(function (err, body) {
@@ -91,7 +96,13 @@ function productCreate(req,res) {
 
 // SELECT a record, get method
 function productRead(req,res) {
-
+  console.log(req.params);
+  productModel.findOne({ _id: req.params.productId }, function (err, body){
+    if (err) {
+      return res.send(err);
+    }
+    res.json(body);
+  });
 }
 
 // UPDATE, put|patch method
