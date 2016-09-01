@@ -32,12 +32,12 @@ function appCtrl($location, $http, $scope){
 
   app.datafromMongo=[];
 
-  $http.get(URI + "/list").then(function(res){
+  $http.get(URI + "/products").then(function(res){
     app.products = res.data;
   });
 
   app.submit = function(req){
-    $http.post(URI + "/add", req).then(function(res){
+    $http.post(URI + "/products", req).then(function(res){
       app.products.push(res.data);
     });
   };

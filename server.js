@@ -44,28 +44,65 @@ mongoose.connect(dbURI, function (err, db) {
 var productModel = mongoose.model('Product', {product: String, description: String});
 
 app.get('/list', function(req, res){
-  productModel.find(function (err, products) {
+  productModel.find(function (err, body) {
     if (err) {
       return res.send(err);
     }
-    res.send(products);
+    res.send(body);
   });
 });
 
-app.post('/add', function (req,res) {
+app.route('/products')
+  .get(productList)
+  .post(productCreate);
+app.route('/products/:productId')
+  .get(productRead)
+  .put(productUpdate)
+  .delete(productDelete);
+
+
+app.post('/add', productCreate);
+
+// SELECT * to list all records, get method
+
+function productList (req, res){
+  productModel.find(function (err, body) {
+    if (err) {
+      return res.send(err);
+    }
+    res.send(body);
+  });
+}
+
+// INSERT, post|put method
+
+function productCreate(req,res) {
   var product = req.body.product;
   // var productDescription = new productModel ({product: product});
   var productDescription = new productModel (req.body);
-  productDescription.save(function(err, record){
+  productDescription.save(function(err, body){
     if (err) {
-      return res.status(400).send(
-        err
-      );
+      return res.status(400).send(err);
     } else {
-      res.send(record);
+      res.send(body);
     }
   });
-});
+}
+
+// SELECT a record, get method
+function productRead(req,res) {
+
+}
+
+// UPDATE, put|patch method
+function productUpdate(req,res) {
+
+}
+
+// DELETE, delete method
+function productDelete(req,res) {
+
+}
 
 // render to a client display (pug) simply without Angular
 app.get('/display', function(req, res){
