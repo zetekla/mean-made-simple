@@ -36,6 +36,20 @@ function appCtrl($location, $http, $scope){
     app.products = res.data;
   });
 
+  app.read = function(id){
+   $http.get(URI +"/products/" + id).then(function(res){
+     console.log(res.data);
+      app.products = res.data;
+   });
+  };
+
+  app.update = function(req){
+    $http.put(URI +"/products/" + req.id, req).then(function(res){
+      console.log(res.data);
+      app.products = res.data;
+    });
+  };
+
   app.submit = function(req){
     $http.post(URI + "/products", req).then(function(res){
       app.products.push(res.data);
@@ -48,6 +62,12 @@ function appCtrl($location, $http, $scope){
         app.datafromMongo.push(d);
       });
     });
+  };
+
+  app.delete = function(id){
+    $http.delete(URI +"/products/" + id).then(function(sth){
+      console.log(sth);
+    })
   };
 
   app.getManex = function(work_order){

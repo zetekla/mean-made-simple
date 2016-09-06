@@ -18,7 +18,7 @@
       <tbody>
       <tr>
         <td>{{product._id}}</td>
-        <td><a href='products/{{product._id}}'>{{product.product}}</a></td>
+        <td><button ng-click="app.read(product._id)">{{product.product}}</button><button ng-click="app.delete(product._id)">Delete</button></td>
         <td>{{product.description}}</td>
       </tr>
       </tbody>

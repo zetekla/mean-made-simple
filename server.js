@@ -33,6 +33,8 @@ app.use(cookieParser());
 app.use(express.static(__dirname + '/views'));
 
 var dbURI = 'mongodb://localhost:27017/schema_name';
+
+mongoose.Promise = global.Promise;
 mongoose.connect(dbURI, function (err, db) {
   if (!err) {
     console.log('Connection established to', dbURI);
@@ -60,7 +62,7 @@ app.get('/list', function(req, res){
 app.route('/products')
   .get(productList)
   .post(productCreate);
-app.route('/products/:productId')
+app.route('/products/:id')
   .get(productRead)
   .put(productUpdate)
   .delete(productDelete);
@@ -75,44 +77,64 @@ function productList (req, res){
     if (err) {
       return res.send(err);
     }
-    res.send(body);
+    res.json(body);
   });
 }
 
-// INSERT, post|put method
+// INSERT, post|put method (CREATE OR UPDATE)
 
 function productCreate(req,res) {
-  var product = req.body.product;
-  // var productDescription = new productModel ({product: product});
-  var productDescription = new productModel (req.body);
-  productDescription.save(function(err, body){
-    if (err) {
-      return res.status(400).send(err);
-    } else {
-      res.send(body);
+  productModel.findOneAndUpdate({ product: req.body.product}, { description: req.body.description}, {new: true}, function(err, body){
+    if (err) throw res.json(err);
+    if (body) res.json(body);
+    else {
+      var product = new productModel (req.body);
+      product.save(function(err, body){
+        if (err) {
+          throw err;
+        } else {
+          res.json(body);
+        }
+      });
     }
   });
 }
 
 // SELECT a record, get method
 function productRead(req,res) {
-  console.log(req.params);
-  productModel.findOne({ _id: req.params.productId }, function (err, body){
+  productModel.find( { _id : req.params.id } , function (err, body){
     if (err) {
-      return res.send(err);
+      throw res.send(err);
     }
+    console.log(body);
     res.json(body);
   });
+
+  /*productModel.findById( req.params.id , function (err, body){
+    if (err) {
+      throw res.send(err);
+    }
+    console.log(body);
+    res.json(body);
+  });*/
 }
 
 // UPDATE, put|patch method
 function productUpdate(req,res) {
+  console.log(req.body);
 
+  productModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, function(err, product) {
+    if (err) throw err;
+    res.json({ info: 'product updated', product: product});
+  });
 }
 
 // DELETE, delete method
 function productDelete(req,res) {
-
+  productModel.findByIdAndRemove(req.params.id, function(err){
+    if (err) throw err;
+    res.json('product deleted!');
+  });
 }
 
 // render to a client display (pug) simply without Angular
@@ -167,3 +189,46 @@ fs.readdirSync(__dirname + '/models').forEach(function (filename) {
 */
 
 app.listen(port);
+app.on('error', onError);
+app.on('listening', onListening);
+console.log('listening on port', port);
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
